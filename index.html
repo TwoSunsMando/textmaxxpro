@@ -898,6 +898,10 @@
         <input type="text" id="tf-company" name="company" style="width:100%; padding:12px 14px; border:1px solid var(--gray-mid); border-radius: var(--radius); font-family:'Source Sans 3', sans-serif; font-size:15px;">
       </div>
       <div>
+        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:6px; color: var(--ink);">Phone</label>
+        <input type="tel" id="tf-phone" name="phone" required style="width:100%; padding:12px 14px; border:1px solid var(--gray-mid); border-radius: var(--radius); font-family:'Source Sans 3', sans-serif; font-size:15px;">
+      </div>
+      <div>
         <label style="display:block; font-size:13px; font-weight:600; margin-bottom:6px; color: var(--ink);">What are you looking to solve?</label>
         <textarea id="tf-message" name="message" rows="4" required style="width:100%; padding:12px 14px; border:1px solid var(--gray-mid); border-radius: var(--radius); font-family:'Source Sans 3', sans-serif; font-size:15px; resize:vertical;"></textarea>
       </div>
@@ -922,6 +926,7 @@
             name: document.getElementById('tf-name').value,
             email: document.getElementById('tf-email').value,
             company: document.getElementById('tf-company').value,
+            phone: document.getElementById('tf-phone').value,
             message: document.getElementById('tf-message').value
           };
 
