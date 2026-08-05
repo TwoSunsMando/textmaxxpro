@@ -493,7 +493,50 @@
       // Collect every named field into a flat payload.
       var payload = { source: 'brand-registration' };
       var fd = new FormData(form);
-      fd.forEach(function (v, k) { payload[k] = v; });
+      var f = {};
+      fd.forEach(function (v, k) { payload[k] = v; f[k] = v; });
+
+      // ─── WORKAROUND (2026-08-05) ────────────────────────────────────
+      // The shared Base44 endpoint `submitTextMaxxContactForm` was built
+      // for the homepage demo form's schema and validates that `name`,
+      // `email`, and `message` are present. Until the Base44 function is
+      // updated to branch on `source` and accept the brand-registration
+      // schema natively, we synthesize those three fields so the submit
+      // passes validation. The 17 real brand-reg fields still ride along
+      // in the payload; the recipient email will also render them in the
+      // formatted `message` blob below for visibility.
+      //
+      // REMOVE this whole block once the Base44 function accepts
+      // source == 'brand-registration' with the brand-reg field schema.
+      // Search for "WORKAROUND (2026-08-05)" to find it later.
+      // ────────────────────────────────────────────────────────────────
+      payload.name = ((f.first_name || '') + ' ' + (f.last_name || '')).trim();
+      payload.email = f.email || '';
+      payload.message = [
+        '=== Brand Campaign Registration ===',
+        '',
+        '── Business Information ──',
+        'Legal Company Name:   ' + (f.legal_name || ''),
+        'DBA / Trade Name:     ' + (f.dba || ''),
+        'Street Address:       ' + (f.street || ''),
+        'Suite / Apt / Unit:   ' + (f.suite || ''),
+        'City:                 ' + (f.city || ''),
+        'State:                ' + (f.state || ''),
+        'Zip Code:             ' + (f.zip || ''),
+        'Business Phone:       ' + (f.phone || ''),
+        'FEIN:                 ' + (f.fein || ''),
+        'Legal Entity Type:    ' + (f.entity_description || ''),
+        'Legal Form:           ' + (f.legal_form || ''),
+        'Industry Vertical:    ' + (f.industry_vertical || ''),
+        '',
+        '── Business Contact — Owner Information ──',
+        'Website:              ' + (f.website || ''),
+        'First Name:           ' + (f.first_name || ''),
+        'Last Name:            ' + (f.last_name || ''),
+        'Email Address:        ' + (f.email || ''),
+        'Cell Phone:           ' + (f.cell || '')
+      ].join('\n');
+      // ─── end WORKAROUND ────────────────────────────────────────────
 
       fetch(ENDPOINT, {
         method: 'POST',
