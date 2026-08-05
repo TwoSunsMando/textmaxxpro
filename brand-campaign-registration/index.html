@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Campaign Registration — Textmaxx Pro</title>
+<meta name="description" content="10DLC brand and campaign registration for Textmaxx Pro customers on the Bandwidth carrier network.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #14120e;
+    --ink-mid: #262319;
+    --gold: #b8972a;
+    --gold-light: #d4aa3a;
+    --gold-pale: #f9f3e3;
+    --gray-bg: #f7f7f5;
+    --gray-mid: #e8e6e0;
+    --gray-text: #6b6860;
+    --text-dark: #1a1a18;
+    --white: #ffffff;
+    --error: #c04040;
+    --success: #4a7c3a;
+    --max: 900px;
+    --radius: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-dark);
+    background: var(--white);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { color: var(--gold-light); }
+
+  /* -------- Nav (compact — logo + back to home) -------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .nav-logo { color: var(--white); font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.01em; }
+  .nav-logo span { color: var(--gold-light); }
+  .nav-back {
+    color: rgba(255,255,255,0.82);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--gold-light); }
+  @media (max-width: 620px) { nav { padding: 0 1rem; } .nav-back { font-size: 13px; } }
+
+  /* -------- Page header -------- */
+  .page-header {
+    background: var(--ink);
+    color: var(--white);
+    padding: 64px 2rem 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(184,151,42,0.04) 60px, rgba(184,151,42,0.04) 61px);
+    pointer-events: none;
+  }
+  .page-header-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+  .page-eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 18px;
+    border: 1px solid rgba(184,151,42,0.35);
+    padding: 5px 16px;
+    border-radius: 3px;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .page-header p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* -------- Form section -------- */
+  .form-section { padding: 60px 2rem 80px; background: var(--white); }
+  .form-inner { max-width: var(--max); margin: 0 auto; }
+
+  .intro {
+    background: var(--gold-pale);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    border-radius: 4px;
+    margin-bottom: 40px;
+    font-size: 15.5px;
+    color: var(--ink-mid);
+  }
+
+  .form-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 36px 0 8px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .form-section-title:first-of-type { margin-top: 8px; }
+  .form-section-hint { font-size: 14px; color: var(--gray-text); margin-bottom: 24px; }
+
+  .row { display: grid; gap: 18px; margin-bottom: 4px; }
+  .row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row.cols-2-1 { grid-template-columns: 2fr 1fr; }
+  .row.cols-1-2-1 { grid-template-columns: 1fr 2fr 1fr 1fr; }
+  @media (max-width: 720px) {
+    .row.cols-2, .row.cols-3, .row.cols-2-1, .row.cols-1-2-1 { grid-template-columns: 1fr; }
+  }
+
+  .field { margin-bottom: 16px; display: flex; flex-direction: column; }
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+  .field label .req { color: var(--error); margin-left: 2px; }
+  .field .help {
+    font-size: 12.5px;
+    color: var(--gray-text);
+    margin-top: 5px;
+    font-style: italic;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    background: var(--white);
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,151,42,0.15);
+  }
+  .field input:invalid:not(:placeholder-shown),
+  .field select:invalid:not(:focus),
+  .field textarea:invalid:not(:placeholder-shown) {
+    border-color: var(--error);
+  }
+
+  .submit-row { margin-top: 36px; }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 14px 32px;
+    border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  #brf-status {
+    margin-top: 20px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    display: none;
+  }
+  #brf-status.success { display: block; background: #eef7ea; color: var(--success); border-left: 3px solid var(--success); }
+  #brf-status.error   { display: block; background: #fbeeee; color: var(--error);   border-left: 3px solid var(--error); }
+
+  /* -------- Footer -------- */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.6);
+    padding: 40px 2rem 32px;
+    text-align: center;
+    font-size: 14px;
+  }
+  footer a { color: rgba(255,255,255,0.75); }
+  footer .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--white); display: block; margin-bottom: 10px; }
+  footer .footer-logo span { color: var(--gold-light); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">textmaxx<span>pro</span></a>
+  <a class="nav-back" href="/">&larr; Back to home</a>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <span class="page-eyebrow">10DLC Compliance</span>
+    <h1>Brand Campaign Registration</h1>
+    <p>Bandwidth carrier registration for Textmaxx Pro customers. Complete this form to register your business brand and campaign for compliant SMS.</p>
+  </div>
+</header>
+
+<section class="form-section">
+  <div class="form-inner">
+
+    <div class="intro">
+      <strong>Thank you for being a Textmaxx Pro customer.</strong> This form registers
+      your business with Bandwidth for 10DLC SMS compliance. All fields marked with
+      <span style="color:var(--error);font-weight:700;">*</span> are required.
+    </div>
+
+    <form id="brandRegForm" novalidate autocomplete="on">
+
+      <!-- =============== SECTION 1: BUSINESS INFORMATION =============== -->
+      <h2 class="form-section-title">Business Information</h2>
+      <p class="form-section-hint">The legal business entity that will be sending SMS through Textmaxx Pro.</p>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label for="brf-legal-name">Legal Company Name <span class="req">*</span></label>
+          <input type="text" id="brf-legal-name" name="legal_name" required autocomplete="organization">
+          <span class="help">Name associated with company FEIN number</span>
+        </div>
+        <div class="field">
+          <label for="brf-dba">DBA or Company Name <span class="req">*</span></label>
+          <input type="text" id="brf-dba" name="dba" required>
+          <span class="help">Doing Business As (repeat Legal Name if same)</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="brf-street">Street Address <span class="req">*</span></label>
+        <input type="text" id="brf-street" name="street" required autocomplete="street-address">
+      </div>
+
+      <div class="row cols-1-2-1">
+        <div class="field">
+          <label for="brf-suite">Suite, Apt. or Unit</label>
+          <input type="text" id="brf-suite" name="suite" autocomplete="address-line2">
+        </div>
+        <div class="field">
+          <label for="brf-city">City <span class="req">*</span></label>
+          <input type="text" id="brf-city" name="city" required autocomplete="address-level2">
+        </div>
+        <div class="field">
+          <label for="brf-state">State <span class="req">*</span></label>
+          <select id="brf-state" name="state" required autocomplete="address-level1">
+            <option value="">— Select —</option>
+            <optgroup label="United States">
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+            </optgroup>
+            <optgroup label="Canada">
+              <option value="AB">Alberta</option>
+              <option value="BC">British Columbia</option>
+              <option value="MB">Manitoba</option>
+              <option value="NB">New Brunswick</option>
+              <option value="NL">Newfoundland and Labrador</option>
+              <option value="NS">Nova Scotia</option>
+              <option value="NT">Northwest Territories</option>
+              <option value="NU">Nunavut</option>
+              <option value="ON">Ontario</option>
+              <option value="PE">Prince Edward Island</option>
+              <option value="QC">Quebec</option>
+              <option value="SK">Saskatchewan</option>
+              <option value="YT">Yukon</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label for="brf-zip">Zip Code <span class="req">*</span></label>
+          <input type="text" id="brf-zip" name="zip" required pattern="\d{5}(-\d{4})?" inputmode="numeric" placeholder="99999 or 99999-9999" autocomplete="postal-code">
+        </div>
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label for="brf-phone">Business Phone <span class="req">*</span></label>
+          <input type="tel" id="brf-phone" name="phone" required pattern="\d{10}" inputmode="numeric" placeholder="9999999999" autocomplete="tel">
+          <span class="help">Numbers only, with area code</span>
+        </div>
+        <div class="field">
+          <label for="brf-fein">FEIN <span class="req">*</span></label>
+          <input type="text" id="brf-fein" name="fein" required pattern="\d{2}-\d{7}" inputmode="numeric" placeholder="99-9999999">
+          <span class="help">Federal Employer Identification Number of the business using Textmaxx Pro</span>
+        </div>
+      </div>
+
+      <div class="row cols-3">
+        <div class="field">
+          <label for="brf-entity-desc">Legal Entity Type <span class="req">*</span></label>
+          <input type="text" id="brf-entity-desc" name="entity_description" required placeholder="e.g. LLC, C Corporation, Partnership">
+        </div>
+        <div class="field">
+          <label for="brf-legal-form">Legal Form <span class="req">*</span></label>
+          <select id="brf-legal-form" name="legal_form" required>
+            <option value="">— Select —</option>
+            <option value="Privately Held Company">Privately Held Company</option>
+            <option value="Publicly Traded Company">Publicly Traded Company</option>
+            <option value="Nonprofit Organization">Nonprofit Organization</option>
+            <option value="Government">Government</option>
+            <option value="Sole Proprietor">Sole Proprietor</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="brf-vertical">Industry Vertical <span class="req">*</span></label>
+          <select id="brf-vertical" name="industry_vertical" required>
+            <option value="">— Select —</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Communication and Mass Media">Communication and Mass Media</option>
+            <option value="Construction and Materials">Construction and Materials</option>
+            <option value="Education">Education</option>
+            <option value="Energy and Utilities">Energy and Utilities</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Financial">Financial</option>
+            <option value="Gambling Lottery">Gambling Lottery</option>
+            <option value="Government">Government</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Hospitality and Travel">Hospitality and Travel</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Non Government Organization">Non Government Organization</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Retail">Retail</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- =============== SECTION 2: BUSINESS CONTACT — OWNER INFORMATION =============== -->
+      <h2 class="form-section-title">Business Contact — Owner Information</h2>
+      <p class="form-section-hint">The person responsible for the account with Bandwidth.</p>
+
+      <div class="field">
+        <label for="brf-website">Website <span class="req">*</span></label>
+        <input type="url" id="brf-website" name="website" required placeholder="https://example.com" autocomplete="url">
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label for="brf-first-name">First Name <span class="req">*</span></label>
+          <input type="text" id="brf-first-name" name="first_name" required autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="brf-last-name">Last Name <span class="req">*</span></label>
+          <input type="text" id="brf-last-name" name="last_name" required autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label for="brf-email">Email Address <span class="req">*</span></label>
+          <input type="email" id="brf-email" name="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="brf-cell">Cell Phone <span class="req">*</span></label>
+          <input type="tel" id="brf-cell" name="cell" required pattern="\d{10}" inputmode="numeric" placeholder="9999999999" autocomplete="tel">
+          <span class="help">Numbers only, with area code</span>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" id="brf-submit" class="btn-primary">Submit Brand Registration</button>
+        <p id="brf-status" role="status" aria-live="polite"></p>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">textmaxx<span>pro</span></span>
+  <p>&copy; 2026 Textmaxx Pro &middot; <a href="/">Home</a></p>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('brandRegForm');
+    var status = document.getElementById('brf-status');
+    var btn = document.getElementById('brf-submit');
+
+    // Same Base44 endpoint used by the Request Demo form on the homepage.
+    // The `source` tag lets the Base44 function route this batch to the
+    // brand-registration recipients (Randy@textmaxxpro.com and
+    // Dave@textmaxxpro.com, per client 2026-08-05) instead of the demo
+    // recipients (Chris/Lisa/Dave). Recipient config lives in Base44,
+    // not in this file.
+    var ENDPOINT = 'https://superagent-da00ded1.base44.app/functions/submitTextMaxxContactForm';
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.className = '';
+      status.textContent = '';
+
+      // Native HTML5 validation catches missing/malformed fields.
+      if (!form.checkValidity()) {
+        status.className = 'error';
+        status.textContent = 'Please check the highlighted fields and try again.';
+        form.reportValidity();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      // Collect every named field into a flat payload.
+      var payload = { source: 'brand-registration' };
+      var fd = new FormData(form);
+      fd.forEach(function (v, k) { payload[k] = v; });
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, data: d }; }); })
+        .then(function (r) {
+          btn.disabled = false;
+          btn.textContent = 'Submit Brand Registration';
+          if (r.ok && r.data && r.data.success) {
+            status.className = 'success';
+            status.textContent = 'Thanks — your brand registration has been received. We’ll follow up shortly.';
+            form.reset();
+            window.scrollTo({ top: status.offsetTop - 100, behavior: 'smooth' });
+          } else {
+            status.className = 'error';
+            status.textContent = (r.data && r.data.error) || 'Something went wrong. Please try again, or email us if the problem persists.';
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Submit Brand Registration';
+          status.className = 'error';
+          status.textContent = 'Network error. Please check your connection and try again.';
+        });
+    });
+  })();
+</script>
+
+</body>
+</html>
