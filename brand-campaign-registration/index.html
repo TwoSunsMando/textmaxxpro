@@ -252,8 +252,11 @@
       <!-- Formspree metadata: sets the subject line of the email that lands
            at the recipient DL (support@textmaxxpro.com). -->
       <input type="hidden" name="_subject" value="Brand Campaign Registration — new submission">
-      <!-- Formspree honeypot: real users leave this blank; bots fill everything. -->
-      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+      <!-- Formspree honeypot: real users leave this blank; bots fill everything.
+           display:none !important is Formspree's documented pattern — harder for
+           browser password managers to autofill, which was flagging real
+           submissions as spam. aria-hidden keeps screen readers off it too. -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;">
 
       <!-- =============== SECTION 1: BUSINESS INFORMATION =============== -->
       <h2 class="form-section-title">Business Information</h2>
