@@ -247,7 +247,13 @@
       <span style="color:var(--error);font-weight:700;">*</span> are required.
     </div>
 
-    <form id="brandRegForm" novalidate autocomplete="on">
+    <form id="brandRegForm" action="https://formspree.io/f/xoeqbpyj" method="POST" novalidate autocomplete="on">
+
+      <!-- Formspree metadata: sets the subject line of the email that lands
+           at the recipient DL (support@textmaxxpro.com). -->
+      <input type="hidden" name="_subject" value="Brand Campaign Registration — new submission">
+      <!-- Formspree honeypot: real users leave this blank; bots fill everything. -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
 
       <!-- =============== SECTION 1: BUSINESS INFORMATION =============== -->
       <h2 class="form-section-title">Business Information</h2>
@@ -465,21 +471,24 @@
     var form = document.getElementById('brandRegForm');
     var status = document.getElementById('brf-status');
     var btn = document.getElementById('brf-submit');
+    var origBtnText = btn.textContent;
 
-    // Same Base44 endpoint used by the Request Demo form on the homepage.
-    // The `source` tag lets the Base44 function route this batch to the
-    // brand-registration recipients (Randy@textmaxxpro.com and
-    // Dave@textmaxxpro.com, per client 2026-08-05) instead of the demo
-    // recipients (Chris/Lisa/Dave). Recipient config lives in Base44,
-    // not in this file.
-    var ENDPOINT = 'https://superagent-da00ded1.base44.app/functions/submitTextMaxxContactForm';
+    // POSTs the form as multipart/form-data to Formspree. Recipient email
+    // is configured Formspree-side (currently support@textmaxxpro.com, an
+    // M365 distribution list Dan admins — add/remove recipients via M365
+    // admin, not by editing this file).
+    //
+    // No payload synthesis or WORKAROUND needed — Formspree passes through
+    // every named field verbatim into the email body. The `email` field
+    // is auto-detected by Formspree and used as the reply-to on the email
+    // that lands in the DL, so recipients can reply straight back to the
+    // submitter.
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       status.className = '';
       status.textContent = '';
 
-      // Native HTML5 validation catches missing/malformed fields.
       if (!form.checkValidity()) {
         status.className = 'error';
         status.textContent = 'Please check the highlighted fields and try again.';
@@ -490,76 +499,30 @@
       btn.disabled = true;
       btn.textContent = 'Submitting…';
 
-      // Collect every named field into a flat payload.
-      var payload = { source: 'brand-registration' };
-      var fd = new FormData(form);
-      var f = {};
-      fd.forEach(function (v, k) { payload[k] = v; f[k] = v; });
-
-      // ─── WORKAROUND (2026-08-05) ────────────────────────────────────
-      // The shared Base44 endpoint `submitTextMaxxContactForm` was built
-      // for the homepage demo form's schema and validates that `name`,
-      // `email`, and `message` are present. Until the Base44 function is
-      // updated to branch on `source` and accept the brand-registration
-      // schema natively, we synthesize those three fields so the submit
-      // passes validation. The 17 real brand-reg fields still ride along
-      // in the payload; the recipient email will also render them in the
-      // formatted `message` blob below for visibility.
-      //
-      // REMOVE this whole block once the Base44 function accepts
-      // source == 'brand-registration' with the brand-reg field schema.
-      // Search for "WORKAROUND (2026-08-05)" to find it later.
-      // ────────────────────────────────────────────────────────────────
-      payload.name = ((f.first_name || '') + ' ' + (f.last_name || '')).trim();
-      payload.email = f.email || '';
-      payload.message = [
-        '=== Brand Campaign Registration ===',
-        '',
-        '── Business Information ──',
-        'Legal Company Name:   ' + (f.legal_name || ''),
-        'DBA / Trade Name:     ' + (f.dba || ''),
-        'Street Address:       ' + (f.street || ''),
-        'Suite / Apt / Unit:   ' + (f.suite || ''),
-        'City:                 ' + (f.city || ''),
-        'State:                ' + (f.state || ''),
-        'Zip Code:             ' + (f.zip || ''),
-        'Business Phone:       ' + (f.phone || ''),
-        'FEIN:                 ' + (f.fein || ''),
-        'Legal Entity Type:    ' + (f.entity_description || ''),
-        'Legal Form:           ' + (f.legal_form || ''),
-        'Industry Vertical:    ' + (f.industry_vertical || ''),
-        '',
-        '── Business Contact — Owner Information ──',
-        'Website:              ' + (f.website || ''),
-        'First Name:           ' + (f.first_name || ''),
-        'Last Name:            ' + (f.last_name || ''),
-        'Email Address:        ' + (f.email || ''),
-        'Cell Phone:           ' + (f.cell || '')
-      ].join('\n');
-      // ─── end WORKAROUND ────────────────────────────────────────────
-
-      fetch(ENDPOINT, {
+      fetch(form.action, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
       })
-        .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, data: d }; }); })
-        .then(function (r) {
+        .then(function (res) {
           btn.disabled = false;
-          btn.textContent = 'Submit Brand Registration';
-          if (r.ok && r.data && r.data.success) {
+          btn.textContent = origBtnText;
+          if (res.ok) {
             status.className = 'success';
-            status.textContent = 'Thanks — your brand registration has been received. We’ll follow up shortly.';
+            status.textContent = "Thanks — your brand registration has been received. We'll follow up shortly.";
             form.reset();
             window.scrollTo({ top: status.offsetTop - 100, behavior: 'smooth' });
-          } else {
-            status.className = 'error';
-            status.textContent = (r.data && r.data.error) || 'Something went wrong. Please try again, or email us if the problem persists.';
+            return;
           }
+          return res.json().then(function (d) {
+            status.className = 'error';
+            status.textContent = (d && d.errors && d.errors.map(function (err) { return err.message; }).join(', '))
+              || 'Something went wrong. Please try again, or email support@textmaxxpro.com directly.';
+          });
         })
         .catch(function () {
           btn.disabled = false;
-          btn.textContent = 'Submit Brand Registration';
+          btn.textContent = origBtnText;
           status.className = 'error';
           status.textContent = 'Network error. Please check your connection and try again.';
         });
