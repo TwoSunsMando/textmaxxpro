@@ -8,7 +8,8 @@ Client site for **textmaxxpro.com** — TextMaxx Pro (business texting solutions
   demo-form endpoint that emails submissions to chris@leedomgroup.com, lisa@leedomgroup.com,
   and dave@textmaxxpro.com.
 - **Content is read-only.** Do not modify, reformat, or "improve" the HTML.
-  Treat the file as a delivered artifact from the client.
+  Treat the file as a delivered artifact from the client. Exception: text edits
+  the client requests in writing (see Content edits below).
 - Hosted on Coolify (`coolify.astridagent.ai`, droplet `159.203.174.128`),
   same git-push &rarr; redeploy workflow as `sde-tech.com`, `aivadealerteams.ai`, and
   `leedomgroup.com`.
@@ -34,3 +35,12 @@ docker run --rm -p 8086:80 textmaxxpro-site
 The form at the bottom of the page submits to a Base44-hosted endpoint via JavaScript.
 Nothing to configure on this host. If Base44 is ever retired, the form action needs to be
 re-pointed. See the source delivery README for details.
+
+## Content edits (client-requested)
+
+- 2026-11-18: per Chris Leedom's written request (trademark filing specimen),
+  all nine references to the AIVA product renamed to "AIVA DealerTeams"
+  (callout headline/body/button, integrations tiles, Auto Dealers bullet,
+  scheduling-agent bullet, footer link). "Textmaxx Pro" spelling untouched.
+  These edits are NOT in apply-patches.py: if the client redelivers the HTML,
+  confirm their copy carries the new name before replacing index.html.
